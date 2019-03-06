@@ -1,0 +1,245 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: 'Provides networking configuration for a standard, public facing application, separates private-public subnets and enforces traffic with NACL rules (qs-1nb14cqcl)'
+Metadata:
+    AWS::CloudFormation::Interface:
+        ParameterGroups:
+          - Label:
+                default: Region Config
+            Parameters:
+              - pRegionAZ1Name
+              - pRegionAZ2Name
+          - Label:
+                default: Application VPC Config
+            Parameters:
+              - pProductionVPCName
+              - pProductionCIDR
+              - pDMZSubnetACIDR
+              - pDMZSubnetBCIDR
+              - pAppPrivateSubnetACIDR
+              - pAppPrivateSubnetBCIDR
+              - pDBPrivateSubnetACIDR
+              - pDBPrivateSubnetBCIDR
+              - pVPCTenancy
+          - Label:
+                default: AWS Quick Start Configuration
+        ParameterLabels:
+            pProductionVPCName:
+                default: ACG Application VPC
+            pProductionCIDR:
+                default: Application VPC CIDR block
+            pDMZSubnetACIDR:
+                default: CIDR block of Public subnet A (internet facing)
+            pDMZSubnetBCIDR:
+                default: CIDR block of Public subnet B (internet facing)
+            pAppPrivateSubnetACIDR:
+                default: CIDR block of Private subnet A (private)
+            pAppPrivateSubnetBCIDR:
+                default: CIDR block of Private subnet B (private)
+            pVPCTenancy:
+                default: Instance tenancy
+    Stack:
+        Value: 2
+    VersionDate:
+        Value: 20160510
+    Identifier:
+        Value: template-vpc-production
+    Input:
+        Description: CIDR blocks, VPC names, KeyName, EC2 instance size
+    Output:
+        Description: Outputs ID of all deployed resources
+Parameters:
+    pRegionAZ1Name:
+        Description: Availability Zone 1 Name in Region
+        Type: String
+        Default: us-west-2a
+    pRegionAZ2Name:
+        Description: Availability Zone 2 Name in Region
+        Type: String
+        Default: us-west-2b
+    pProductionVPCName:
+        Description: Application VPC Name
+        Type: String
+        Default: ACG Application VPC
+    pProductionCIDR:
+        Description: CIDR block for Application VPC
+        Type: String
+        Default: 10.12.0.0/16
+    pDMZSubnetACIDR:
+        Description: CIDR block for App Public subnet A
+        Type: String
+        Default: 10.12.10.0/24
+    pDMZSubnetBCIDR:
+        Description: CIDR block for App Public subnet B
+        Type: String
+        Default: 10.12.20.0/24
+    pAppPrivateSubnetACIDR:
+        Description: CIDR block for App Private subnet A
+        Type: String
+        Default: 10.12.30.0/24
+    pAppPrivateSubnetBCIDR:
+        Description: CIDR block for App Private subnet B
+        Type: String
+        Default: 10.12.40.0/24
+    pVPCTenancy:
+        Description: Instance tenancy behavior for this VPC
+        Type: String
+        Default: default
+        AllowedValues:
+          - default
+          - dedicated
+Resources:
+    rVPCProduction:
+        Type: AWS::EC2::VPC
+        Properties:
+            CidrBlock: !Ref pProductionCIDR
+            InstanceTenancy: !Ref pVPCTenancy
+            EnableDnsSupport: true
+            EnableDnsHostnames: true
+            Tags:
+              - Key: Name
+                Value: !Ref pProductionVPCName
+    rDMZSubnetA:
+        Type: AWS::EC2::Subnet
+        Properties:
+            CidrBlock: !Ref pDMZSubnetACIDR
+            AvailabilityZone: !Ref pRegionAZ1Name
+            VpcId: !Ref rVPCProduction
+            Tags:
+              - Key: Name
+                Value: ACG Application Public Subnet A
+    rDMZSubnetB:
+        Type: AWS::EC2::Subnet
+        Properties:
+            CidrBlock: !Ref pDMZSubnetBCIDR
+            AvailabilityZone: !Ref pRegionAZ2Name
+            VpcId: !Ref rVPCProduction
+            Tags:
+              - Key: Name
+                Value: ACG Application Public Subnet B
+    rAppPrivateSubnetA:
+        Type: AWS::EC2::Subnet
+        Properties:
+            CidrBlock: !Ref pAppPrivateSubnetACIDR
+            AvailabilityZone: !Ref pRegionAZ1Name
+            VpcId: !Ref rVPCProduction
+            Tags:
+              - Key: Name
+                Value: ACG Application Private Subnet A
+    rAppPrivateSubnetB:
+        Type: AWS::EC2::Subnet
+        Properties:
+            CidrBlock: !Ref pAppPrivateSubnetBCIDR
+            AvailabilityZone: !Ref pRegionAZ2Name
+            VpcId: !Ref rVPCProduction
+            Tags:
+              - Key: Name
+                Value: ACG Application Private Subnet B
+    rIGWProd:
+        Type: AWS::EC2::InternetGateway
+        Properties:
+            Tags:
+              - Key: Name
+                Value: ACG igw-application
+    rRouteTableMain:
+        Type: AWS::EC2::RouteTable
+        Properties:
+            VpcId: !Ref rVPCProduction
+            Tags:
+              - Key: Name
+                Value: ACG Application Public Route
+    rEIPProdNatA:
+        Type: AWS::EC2::EIP
+        Properties:
+            Domain: vpc
+    rNATGatewaySubnetA:
+        Type: AWS::EC2::NatGateway
+        DependsOn: rIGWProd
+        Properties:
+            AllocationId: !GetAtt rEIPProdNatA.AllocationId
+            SubnetId: !Ref rDMZSubnetA
+    rEIPProdNatB:
+        Type: AWS::EC2::EIP
+        Properties:
+            Domain: vpc
+    rNATGatewaySubnetB:
+        Type: AWS::EC2::NatGateway
+        DependsOn: rIGWProd
+        Properties:
+            AllocationId: !GetAtt rEIPProdNatB.AllocationId
+            SubnetId: !Ref rDMZSubnetB
+    rRouteProdIGW:
+        Type: AWS::EC2::Route
+        DependsOn: rGWAttachmentProdIGW
+        Properties:
+            RouteTableId: !Ref rRouteTableMain
+            GatewayId: !Ref rIGWProd
+            DestinationCidrBlock: 0.0.0.0/0
+    rRouteProdPrivateNatGatewayA:
+        Type: AWS::EC2::Route
+        Properties:
+            DestinationCidrBlock: 0.0.0.0/0
+            RouteTableId: !Ref rRouteTableProdPrivateA
+            NatGatewayId: !Ref rNATGatewaySubnetA
+    rRouteProdPrivateNatGatewayB:
+        Type: AWS::EC2::Route
+        Properties:
+            DestinationCidrBlock: 0.0.0.0/0
+            RouteTableId: !Ref rRouteTableProdPrivateB
+            NatGatewayId: !Ref rNATGatewaySubnetB
+    rRouteAssocProdDMZA:
+        Type: AWS::EC2::SubnetRouteTableAssociation
+        Properties:
+            RouteTableId: !Ref rRouteTableMain
+            SubnetId: !Ref rDMZSubnetA
+    rRouteAssocProdDMZB:
+        Type: AWS::EC2::SubnetRouteTableAssociation
+        Properties:
+            RouteTableId: !Ref rRouteTableMain
+            SubnetId: !Ref rDMZSubnetB
+    rAppPrivateSubnetAssociationA:
+        Type: AWS::EC2::SubnetRouteTableAssociation
+        Properties:
+            RouteTableId: !Ref rRouteTableProdPrivateA
+            SubnetId: !Ref rAppPrivateSubnetA
+    rAppPrivateSubnetAssociationB:
+        Type: AWS::EC2::SubnetRouteTableAssociation
+        Properties:
+            RouteTableId: !Ref rRouteTableProdPrivateB
+            SubnetId: !Ref rAppPrivateSubnetB
+    rRouteTableProdPrivateA:
+        Type: AWS::EC2::RouteTable
+        Properties:
+            VpcId: !Ref rVPCProduction
+            Tags:
+              - Key: Name
+                Value: ACG Application Private Route A
+    rRouteTableProdPrivateB:
+        Type: AWS::EC2::RouteTable
+        Properties:
+            VpcId: !Ref rVPCProduction
+            Tags:
+              - Key: Name
+                Value: ACG Application Private Route B
+    rGWAttachmentProdIGW:
+        Type: AWS::EC2::VPCGatewayAttachment
+        DependsOn: rIGWProd
+        Properties:
+            VpcId: !Ref rVPCProduction
+            InternetGatewayId: !Ref rIGWProd
+Outputs:
+    rVPCProduction:
+        Value: !Ref rVPCProduction
+    rDMZSubnetA:
+        Value: !Ref rDMZSubnetA
+    rDMZSubnetB:
+        Value: !Ref rDMZSubnetB
+    rRouteTableProdPrivate:
+        Value: !Ref rRouteTableProdPrivateA
+    rRouteTableProdPrivateB:
+        Value: !Ref rRouteTableProdPrivateB
+    rRouteTableProdPublic:
+        Value: !Ref rRouteTableMain
+    rAppPrivateSubnetA:
+        Value: !Ref rAppPrivateSubnetA
+    rAppPrivateSubnetB:
+        Value: !Ref rAppPrivateSubnetB
