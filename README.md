@@ -18,6 +18,7 @@ https://aws.amazon.com/quickstart/architecture/compliance-nist/
 ## Chapter 6:
 
 We use an S3 bucket policy to restrict access based on the source IPv6 address.
+
 s3-bucket-policy.json is a sample of this type of policy
 
 ## Chapter 7:
@@ -25,6 +26,7 @@ s3-bucket-policy.json is a sample of this type of policy
 Then we have 2 different methods of IPv6 CloudFormation Templates (CFTs) for the automation chapter.
 
 dual-app-vpc-method1.template
+
 dual-app-vpc-method2.template
 
 Then we have a comparable AWS CLI script for rapid IPv6 deployment.  This is a bash script that runs AWS CLI commands to quickly deploy an equivalent New VPC.
