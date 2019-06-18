@@ -1,4 +1,4 @@
-# Course_Using_IPv6_on_AWS
+# Rapidly Deploying IPv6 on AWS
 
 These scripts are for the “Rapidly Deploying IPv6 on AWS” ACloud.Guru Class.
 
