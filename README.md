@@ -10,7 +10,7 @@ ipv4-mgmt-vpc.template = Launches an IPv4-only Management VPC
 
 ipv4-app-vpc.template = Launches an IPv4-only Application VPC
 
-These are used in the early classes to quickly build up the IPv4-only management and application VPCs, which we use as a base for manual configuration of IPv6.
+These are used in the early chapter of this class to quickly build up the IPv4-only management and application VPCs, which we use as a base for manual configuration of IPv6.
 
 These are based on the AWS QuickStart Templates.
 https://aws.amazon.com/quickstart/architecture/compliance-nist/
