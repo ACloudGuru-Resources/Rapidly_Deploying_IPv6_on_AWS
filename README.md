@@ -31,4 +31,4 @@ dual-app-vpc-method2.template
 
 Then we have a comparable AWS CLI script for rapid IPv6 deployment.
 
-awscli-ipv6.sh is a bash script that runs AWS CLI commands to quickly deploy an equivalent New VPC.
+awscli-ipv6.sh is a bash script that runs AWS CLI commands to quickly deploy an equivalent VPC named NewIPv6VPC.
