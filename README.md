@@ -1,10 +1,10 @@
 # Rapidly Deploying IPv6 on AWS
 
-These scripts are for the “Rapidly Deploying IPv6 on AWS” ACloud.Guru Class.
+These scripts are used in the “Rapidly Deploying IPv6 on AWS” ACloud.Guru Class.
 
 ## Chapter3:
 
-These 2 CloudFormation Templates are used in Chapter 3
+These two CloudFormation Templates (CFTs) are used in Chapter 3 to build IPv4-Only VPCs.
 
 ipv4-mgmt-vpc.template = Launches an IPv4-only Management VPC
 
@@ -23,7 +23,7 @@ s3-bucket-policy.json is a sample of this type of IAM policy used with an S3 buc
 
 ## Chapter 7:
 
-Then we have 2 different methods of IPv6 CloudFormation Templates (CFTs) for the automation chapter.
+Then we have two different methods of IPv6 CloudFormation Templates (CFTs) for the automation chapter.
 
 dual-app-vpc-method1.template
 
