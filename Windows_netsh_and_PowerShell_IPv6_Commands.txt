@@ -1,4 +1,4 @@
-Microsoft Windows netsh commands to inspect an instance’s IPv6 settings:
+Microsoft Windows netsh commands to inspect an instanceâ€™s IPv6 settings:
 netsh
 interface ipv6
 show address
@@ -8,7 +8,7 @@ show route
 show dns
 show prefixpolicies active
 
-Windows PowerShell commands to inspect the instance’s IPv6 configuration:
+Windows PowerShell commands to inspect the instanceâ€™s IPv6 configuration:
 Start > PowerShell
 Windows PowerShell
 Get-NetIPInterface
