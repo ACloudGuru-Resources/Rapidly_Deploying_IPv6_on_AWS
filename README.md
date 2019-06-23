@@ -21,6 +21,8 @@ index.php file is used to show the client IP address contacting our web server E
 
 CloudWatchLogsIAMPolicy.json is used when configuring VPC Flow Logs.
 
+webserver2-index.html is the index.html file that is used in the Windows Web Server 2.
+
 ## Chapter 6:
 
 We use an S3 bucket policy to restrict access based on the source IPv6 address.
