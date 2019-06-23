@@ -21,6 +21,8 @@ index.php file is used to show the client IP address contacting our web server E
 
 CloudWatchLogsIAMPolicy.json is used when configuring VPC Flow Logs.
 
+Windows_netsh_and_PowerShell_IPv6_Commands.txt is a list of IPv6 netsh and PowerShell commands.
+
 webserver2-index.html is the index.html file that is used in the Windows Web Server 2.
 
 ## Chapter 6:
