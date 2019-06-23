@@ -15,6 +15,12 @@ These are used in the early chapter of this class to quickly build up the IPv4-o
 These are based on the AWS QuickStart Templates.
 https://aws.amazon.com/quickstart/architecture/compliance-nist/
 
+## Chapter4:
+
+index.php file is used to show the client IP address contacting our web server EC2 instance.
+
+CloudWatchLogsIAMPolicy.json is used when configuring VPC Flow Logs.
+
 ## Chapter 6:
 
 We use an S3 bucket policy to restrict access based on the source IPv6 address.
