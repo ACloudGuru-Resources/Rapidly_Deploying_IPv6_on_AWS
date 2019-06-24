@@ -29,6 +29,8 @@ webserver2-index.html is the index.html file that is used in the Windows Web Ser
 
 Modify_Apache_Logging.txt contains the steps to modify the Apache logging to show the X-Forwarded-For Header.
 
+Malicious_URLs.txt contains some sample malformed URLs that you can try to test your WAF security policies.
+
 ## Chapter 6:
 
 We use an S3 bucket policy to restrict access based on the source IPv6 address.
