@@ -1,0 +1,62 @@
+Useful AWS CLI Commands for Configuring IPv6
+
+
+Latest AWS CLI version
+http://docs.aws.amazon.com/cli/latest/
+
+AWS CLI EC2 commands
+https://docs.aws.amazon.com/cli/latest/reference/ec2/index.html
+
+
+aws ec2 create-vpc --cidr-block 
+https://docs.aws.amazon.com/cli/latest/reference/ec2/create-vpc.html
+
+aws ec2 describe-vpcs 
+https://docs.aws.amazon.com/cli/latest/reference/ec2/describe-vpcs.html
+
+aws ec2 create-internet-gateway
+https://docs.aws.amazon.com/cli/latest/reference/ec2/create-internet-gateway.html
+
+aws ec2 describe-internet-gateways 
+https://docs.aws.amazon.com/cli/latest/reference/ec2/describe-internet-gateways.html
+
+aws ec2 create-egress-only-internet-gateway
+https://docs.aws.amazon.com/cli/latest/reference/ec2/create-egress-only-internet-gateway.html
+
+aws ec2 describe-egress-only-internet-gateways 
+https://docs.aws.amazon.com/cli/latest/reference/ec2/describe-egress-only-internet-gateways.html
+
+aws ec2 create-subnet
+https://docs.aws.amazon.com/cli/latest/reference/ec2/create-subnet.html
+
+aws ec2 describe-subnets 
+https://docs.aws.amazon.com/cli/latest/reference/ec2/describe-subnets.html
+
+aws ec2 modify-subnet-attribute
+https://docs.aws.amazon.com/cli/latest/reference/ec2/modify-subnet-attribute.html
+
+aws ec2 create-route-table
+https://docs.aws.amazon.com/cli/latest/reference/ec2/create-route-table.html
+
+aws ec2 create-route
+https://docs.aws.amazon.com/cli/latest/reference/ec2/create-route.html
+
+aws ec2 associate-route-table
+https://docs.aws.amazon.com/cli/latest/reference/ec2/associate-route-table.html
+
+aws ec2 describe-route-tables 
+https://docs.aws.amazon.com/cli/latest/reference/ec2/describe-route-tables.html
+
+aws ec2 describe-network-acls 
+https://docs.aws.amazon.com/cli/latest/reference/ec2/describe-network-acls.html
+
+aws ec2 describe-network-interfaces
+https://docs.aws.amazon.com/cli/latest/reference/ec2/describe-network-interfaces.html
+
+aws ec2 assign-ipv6-addresses
+https://docs.aws.amazon.com/cli/latest/reference/ec2/assign-ipv6-addresses.html
+
+aws ec2 unassign-ipv6-addresses  
+https://docs.aws.amazon.com/cli/latest/reference/ec2/unassign-ipv6-addresses.html
+
+
