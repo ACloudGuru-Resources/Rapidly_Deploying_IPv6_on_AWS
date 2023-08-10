@@ -1,9 +1,0 @@
-Malicious URLs to test our WAF
-
-We can try a few bad URLs to test our dual-protocol ALB and WAF security policies.
-
-Simply substitute your ALB's name and identifier and region in the URL and try these paths for yourself:
-
-http://acg-alb-12345678.us-west-2.elb.amazonaws.com/foo?username=1' or '1' = '
-http://acg-alb-12345678.us-west-2.elb.amazonaws.com/foo?username=1%27%20or%20%271%27%20=%20%27
-http://acg-alb-12345678.us-west-2.elb.amazonaws.com/(\.|(%|%25)2E)(\.|(%|%25)2E)(\/|(%|%25)2F|\\|(%|%25)5C)/i
